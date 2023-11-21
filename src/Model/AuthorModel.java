@@ -5,6 +5,8 @@
 package Model;
 import Controller.koneksi;
 import java.sql.*; 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -75,5 +77,30 @@ public class AuthorModel {
         }
     }
 }
+  
+  public List<AuthorModel> getAuthor()
+  {
+      List<AuthorModel> authors = null; 
+      
+      try {
+          connection = koneksi.getConnection(); 
+          PreparedStatement statement = connection.prepareStatement("select * from author");
+          ResultSet resultSet = statement.executeQuery(); 
+          
+          while(resultSet.next()){
+            AuthorModel author = new AuthorModel();
+            author.setName(resultSet.getString("name"));
+            author.setAddress(resultSet.getString("address"));
+            author.setContact(resultSet.getString("contact"));
+            authors.add(author); 
+          }
+      } catch (Exception e) {
+             e.printStackTrace();
+      }
+      
+      return authors; 
+  }
+  
+  
 
 }

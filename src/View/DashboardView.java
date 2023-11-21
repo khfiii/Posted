@@ -6,20 +6,44 @@ package View;
 
 
 import Controller.AuthorController;
+import Controller.koneksi;
+import Model.AuthorTableModel;
+import java.sql.*; 
+import dynamic_subjtable.TableCustom;
 import java.awt.Color;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author kahfi
  */
 public class DashboardView extends javax.swing.JFrame {
+    private AuthorController authorController; 
+    
+    private AuthorTableModel tableModel; 
+
+    
     
     public DashboardView() {
         initComponents();
-        setTableAuthor();
- 
+        initAuthorTable();
+  
+
     }
+    
+    public void initAuthorTable()
+    {
+        tableModel = new AuthorTableModel(); 
+        authorTable.setModel(tableModel);   
+        authorController = new AuthorController(tableModel);
+        authorController.setCostumTable();
+        authorController.loadData(this);
+    }
+    
+  
+
+    
     
     private void setPanelAndButton(View.Button activeButton, JPanel activePanel) {
     // Mengatur panel-panel yang terlibat
@@ -37,10 +61,7 @@ public class DashboardView extends javax.swing.JFrame {
     settingButton.setBackground(activeButton == settingButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
 }
     
-   private void setTableAuthor()
-   {
-       table.TableCustom.apply(authorScrollPane, table.TableCustom.TableType.MULTI_LINE);
-   }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -232,6 +253,8 @@ public class DashboardView extends javax.swing.JFrame {
 
         mainPanel.add(categoryPanel, "card4");
 
+        authorPanel.setBackground(new java.awt.Color(255, 255, 255));
+
         authorTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -399,7 +422,7 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JPanel SidePanel;
     private View.Button authorButton;
     private javax.swing.JPanel authorPanel;
-    private javax.swing.JScrollPane authorScrollPane;
+    public static javax.swing.JScrollPane authorScrollPane;
     public dynamic_subjtable.TableCustom authorTable;
     private View.Button categoryButton;
     private javax.swing.JPanel categoryPanel;

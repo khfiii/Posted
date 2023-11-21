@@ -5,46 +5,62 @@
 package Controller;
 
 import Model.AuthorModel;
-import View.AuthorView;
+import Model.AuthorTableModel;
+import View.DashboardView;
+import static View.DashboardView.authorScrollPane;
+import java.sql.*; 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 
-/**
- *
- * @author kahfi
- */
 
 
 public class AuthorController {
     
-  AuthorView authorView; 
-  AuthorModel authorModel = new AuthorModel(); 
+AuthorTableModel authorTable; 
 
-  
- public AuthorController(AuthorView view)
- {
-     this.authorView = view; 
- }
-  
- public void insert()
- {
-  String name = authorView.getFieldAuthor().getText(); 
-  String address = authorView.getFieldAddress().getText(); 
-  String contact = authorView.getFieldContact().getText(); 
+public AuthorController(AuthorTableModel authorTable)
+{
+    this.authorTable = authorTable; 
+}
 
-  
-  this.authorModel.setName(name);
-  this.authorModel.setAddress(address);
-  this.authorModel.setContact(contact);
-  
-  
-  this.authorModel.insertData();
-  authorView.dispose();
-  
- }
-  
+
 
  
-  
-
+    
+    public void setCostumTable()
+   {
+       table.TableCustom.apply(authorScrollPane, table.TableCustom.TableType.MULTI_LINE);
+       
+   }
+    
+    
+    public void loadData(DashboardView view)
+    {
+        try {
+            PreparedStatement statement;
+            ResultSet result; 
+            String query = "select * from author"; 
+            
+            statement = koneksi.getConnection().prepareStatement(query); 
+            
+            result = statement.executeQuery(query); 
+            
+            List<AuthorModel> list = new ArrayList<>(); 
+            
+            while(result.next()){
+                
+                AuthorModel author = new AuthorModel(); 
+                author.setName(result.getString("name"));
+                author.setAddress(result.getString("address"));
+                author.setContact(result.getString("contact"));
+                list.add(author); 
+            }
+            
+            authorTable.setList(list);
+        } catch (Exception e) {
+        }
+    }
     
 }
