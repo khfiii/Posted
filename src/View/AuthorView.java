@@ -5,6 +5,7 @@
 package View;
 
 import Controller.AuthorController;
+import Model.AuthorModel;
 import textfield.TextField;
 
 /**
@@ -12,8 +13,10 @@ import textfield.TextField;
  * @author kahfi
  */
 public class AuthorView extends javax.swing.JFrame {
-    AuthorController authorController = new AuthorController(this); 
 
+
+    DashboardView dashboard = new DashboardView(); 
+    AuthorController authorController = new AuthorController(dashboard); 
     /**
      * Creates new form AuthorView
      */
@@ -123,7 +126,9 @@ public class AuthorView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-       authorController.insert();
+     
+        authorController.saveData(this);
+           
     }//GEN-LAST:event_button2ActionPerformed
 
 

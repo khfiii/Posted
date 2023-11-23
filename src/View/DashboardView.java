@@ -11,6 +11,14 @@ import Model.AuthorTableModel;
 import java.sql.*; 
 import dynamic_subjtable.TableCustom;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,30 +27,15 @@ import javax.swing.table.DefaultTableModel;
  * @author kahfi
  */
 public class DashboardView extends javax.swing.JFrame {
-    private AuthorController authorController; 
-    
-    private AuthorTableModel tableModel; 
 
-    
     
     public DashboardView() {
         initComponents();
-        initAuthorTable();
+        authorData();
   
 
     }
-    
-    public void initAuthorTable()
-    {
-        tableModel = new AuthorTableModel(); 
-        authorTable.setModel(tableModel);   
-        authorController = new AuthorController(tableModel);
-        authorController.setCostumTable();
-        authorController.loadData(this);
-    }
-    
-  
-
+   
     
     
     private void setPanelAndButton(View.Button activeButton, JPanel activePanel) {
@@ -90,6 +83,7 @@ public class DashboardView extends javax.swing.JFrame {
         authorScrollPane = new javax.swing.JScrollPane();
         authorTable = new dynamic_subjtable.TableCustom();
         newAuthorButton = new View.Button();
+        newAuthorButton1 = new View.Button();
         settingPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -188,21 +182,17 @@ public class DashboardView extends javax.swing.JFrame {
         dashboardPanel.setLayout(dashboardPanelLayout);
         dashboardPanelLayout.setHorizontalGroup(
             dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 810, Short.MAX_VALUE)
-            .addGroup(dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(dashboardPanelLayout.createSequentialGroup()
-                    .addGap(0, 374, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addGap(0, 374, Short.MAX_VALUE)))
+            .addGroup(dashboardPanelLayout.createSequentialGroup()
+                .addGap(0, 374, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(0, 374, Short.MAX_VALUE))
         );
         dashboardPanelLayout.setVerticalGroup(
             dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-            .addGroup(dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(dashboardPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(dashboardPanelLayout.createSequentialGroup()
+                .addGap(0, 291, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(0, 292, Short.MAX_VALUE))
         );
 
         mainPanel.add(dashboardPanel, "card2");
@@ -276,6 +266,14 @@ public class DashboardView extends javax.swing.JFrame {
             }
         });
 
+        newAuthorButton1.setBackground(new java.awt.Color(153, 153, 255));
+        newAuthorButton1.setText("Refresh");
+        newAuthorButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newAuthorButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout authorPanelLayout = new javax.swing.GroupLayout(authorPanel);
         authorPanel.setLayout(authorPanelLayout);
         authorPanelLayout.setHorizontalGroup(
@@ -283,7 +281,10 @@ public class DashboardView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, authorPanelLayout.createSequentialGroup()
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(authorPanelLayout.createSequentialGroup()
+                        .addComponent(newAuthorButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(authorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28))
         );
@@ -291,7 +292,9 @@ public class DashboardView extends javax.swing.JFrame {
             authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, authorPanelLayout.createSequentialGroup()
                 .addContainerGap(90, Short.MAX_VALUE)
-                .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newAuthorButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(authorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
@@ -383,6 +386,10 @@ public class DashboardView extends javax.swing.JFrame {
        new AuthorView().setVisible(true);
     }//GEN-LAST:event_newAuthorButtonActionPerformed
 
+    private void newAuthorButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAuthorButton1ActionPerformed
+ 
+    }//GEN-LAST:event_newAuthorButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -423,7 +430,7 @@ public class DashboardView extends javax.swing.JFrame {
     private View.Button authorButton;
     private javax.swing.JPanel authorPanel;
     public static javax.swing.JScrollPane authorScrollPane;
-    public dynamic_subjtable.TableCustom authorTable;
+    public static dynamic_subjtable.TableCustom authorTable;
     private View.Button categoryButton;
     private javax.swing.JPanel categoryPanel;
     private View.Button dashboardButton;
@@ -437,7 +444,17 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JPanel jurnalPanel;
     private javax.swing.JPanel mainPanel;
     public View.Button newAuthorButton;
+    public View.Button newAuthorButton1;
     private View.Button settingButton;
     private javax.swing.JPanel settingPanel;
     // End of variables declaration//GEN-END:variables
+
+      public void authorData()
+    {
+        
+       new AuthorController(this).loadData(); 
+        
+    }
+
+
 }

@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Model;
+import Controller.AuthorController;
 import Controller.koneksi;
+import View.AuthorView;
+import View.DashboardView;
 import java.sql.*; 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +62,11 @@ public class AuthorModel {
         int rowsAffected = statement.executeUpdate();
 
         if (rowsAffected > 0) {
-            JOptionPane.showMessageDialog(null, "Author successfully inserted!");
+           JOptionPane.showMessageDialog(null, "Author successfully inserted!");
+            System.out.println("kode ini dieksekusi");
+         
+
+
         } else {
             JOptionPane.showMessageDialog(null, "Failed to insert author.");
         }

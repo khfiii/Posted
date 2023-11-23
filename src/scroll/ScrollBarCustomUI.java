@@ -23,26 +23,26 @@ public class ScrollBarCustomUI extends BasicScrollBarUI {
 
     private boolean isMin;
     private boolean isMax;
-
-    @Override
-    public void installUI(JComponent c) {
-        super.installUI(c);
-        scrollbar.addAdjustmentListener(new AdjustmentListener() {
-            @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                BoundedRangeModel br = scrollbar.getModel();
-                boolean min = br.getValue() == br.getMinimum();
-                boolean max = br.getValue() + br.getExtent() == br.getMaximum();
-                if (isMin != min) {
-                    isMin = min;
-                    scrollbar.repaint();
-                } else if (isMax != max) {
-                    isMax = max;
-                    scrollbar.repaint();
-                }
-            }
-        });
-    }
+//
+//    @Override
+//    public void installUI(JComponent c) {
+//        super.installUI(c);
+//        scrollbar.addAdjustmentListener(new AdjustmentListener() {
+//            @Override
+//            public void adjustmentValueChanged(AdjustmentEvent e) {
+//                BoundedRangeModel br = scrollbar.getModel();
+//                boolean min = br.getValue() == br.getMinimum();
+//                boolean max = br.getValue() + br.getExtent() == br.getMaximum();
+//                if (isMin != min) {
+//                    isMin = min;
+//                    scrollbar.repaint();
+//                } else if (isMax != max) {
+//                    isMax = max;
+//                    scrollbar.repaint();
+//                }
+//            }
+//        });
+//    }
 
     @Override
     protected void paintTrack(Graphics grphcs, JComponent jc, Rectangle rctngl) {

@@ -44,7 +44,7 @@ public class LoginView extends javax.swing.JFrame {
       public static void setDefaultTextIfEmpty(javax.swing.JTextField textField, String defaultText) {
         if (textField.getText().equals("")) {
             textField.setText(defaultText);
-        }
+        }                                 
     }
 
     /**
