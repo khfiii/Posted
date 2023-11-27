@@ -6,72 +6,79 @@ package Controller;
 
 import Model.AuthorModel;
 import Model.AuthorTableModel;
-import View.AuthorView;
 import View.DashboardView;
 import static View.DashboardView.authorScrollPane;
+import java.awt.Dimension;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import raven.alerts.MessageAlerts;
+import raven.popup.GlassPanePopup;
 
 public class AuthorController {
 
     AuthorTableModel authorTable;
     DashboardView dashboardView;
+    AuthorModel authorModel;
 
     public AuthorController(DashboardView dashboardView) {
         this.dashboardView = dashboardView;
+        this.authorModel = new AuthorModel();
         table.TableCustom.apply(authorScrollPane, table.TableCustom.TableType.MULTI_LINE);
 
     }
 
     public void loadData() {
         try {
-            PreparedStatement statement;
-            ResultSet result;
-            String query = "select * from author order by name asc";
-
-            statement = koneksi.getConnection().prepareStatement(query);
-
-            result = statement.executeQuery(query);
-
-            List<AuthorModel> list = new ArrayList<>();
-
-            while (result.next()) {
-
-                AuthorModel author = new AuthorModel();
-                author.setName(result.getString("name"));
-                author.setAddress(result.getString("address"));
-                author.setContact(result.getString("contact"));
-                list.add(author);
-            }
-
-            AuthorTableModel authorTable = new AuthorTableModel(list);
+            AuthorTableModel authorTable = new AuthorTableModel(authorModel.getAuthor());
             dashboardView.authorTable.setModel(authorTable);
-            
-
         } catch (Exception e) {
         }
     }
-
-    public void saveData(AuthorView authorView) {
-        String nama = authorView.fieldAuthor.getText();
-        String address = authorView.fieldAddress.getText();
-        String contact = authorView.fieldContact.getText();
-
-        AuthorModel model = new AuthorModel();
-
-        model.setName(nama);
-        model.setAddress(address);
-        model.setContact(contact);
-
-        model.insertData();
-
-        authorView.dispose();
-       
-
+    
+    public void cleanData()
+    {
+        dashboardView.fieldName.setText(""); 
+        dashboardView.fieldAddress.setText(""); 
+        dashboardView.fieldContact.setText("");
+        
     }
 
+    public void insertData() {
 
+        String nama = dashboardView.fieldName.getText();
+        String contact = dashboardView.fieldContact.getText();
+        String address = dashboardView.fieldAddress.getText();
+        
+
+        if (nama.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Field name is required");
+            return; 
+
+        } 
+        if (contact.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Field contact is required");
+            return; 
+
+        }
+        if (address.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Field address is required");
+            return; 
+        }
+        
+        authorModel.setName(nama);
+        authorModel.setAddress(address);   
+        authorModel.setContact(contact);
+
+        if (authorModel.insertData()) {
+           JOptionPane.showMessageDialog(null, "Succesfully");
+           loadData();
+           dashboardView.setActivePanel(dashboardView.authorPanel);
+        }
+
+    }
 
 }

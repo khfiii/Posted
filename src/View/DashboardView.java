@@ -4,11 +4,10 @@
  */
 package View;
 
-
 import Controller.AuthorController;
 import Controller.koneksi;
 import Model.AuthorTableModel;
-import java.sql.*; 
+import java.sql.*;
 import dynamic_subjtable.TableCustom;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -21,40 +20,54 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import raven.popup.GlassPanePopup;
 
 /**
  *
  * @author kahfi
  */
 public class DashboardView extends javax.swing.JFrame {
-
     
+    AuthorController authorController; 
+
     public DashboardView() {
         initComponents();
-        authorData();
-  
+        GlassPanePopup.install(this);
+
+        this.authorController = new AuthorController(this); 
+        loadAuthorData();
 
     }
-   
-    
-    
-    private void setPanelAndButton(View.Button activeButton, JPanel activePanel) {
-    // Mengatur panel-panel yang terlibat
-    dashboardPanel.setVisible(activePanel == dashboardPanel);
-    jurnalPanel.setVisible(activePanel == jurnalPanel);
-    categoryPanel.setVisible(activePanel == categoryPanel);
-    authorPanel.setVisible(activePanel == authorPanel);
-    settingPanel.setVisible(activePanel == settingPanel);
 
-    // Mengatur warna tombol-tombol
-    dashboardButton.setBackground(activeButton == dashboardButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
-    jurnalButton.setBackground(activeButton == jurnalButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
-    categoryButton.setBackground(activeButton == categoryButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
-    authorButton.setBackground(activeButton == authorButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
-    settingButton.setBackground(activeButton == settingButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
-}
+    public TableCustom getAuthorTable() {
+        return authorTable;
+    }
     
+    public void loadAuthorData()
+    {
+        authorController.loadData();
+    }
 
+    private void setActiveButton(View.Button activeButton) {
+
+        // Mengatur warna tombol-tombol
+        dashboardButton.setBackground(activeButton == dashboardButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
+        jurnalButton.setBackground(activeButton == jurnalButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
+        categoryButton.setBackground(activeButton == categoryButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
+        authorButton.setBackground(activeButton == authorButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
+        settingButton.setBackground(activeButton == settingButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
+    }
+    
+     public void setActivePanel(JPanel activePanel) {
+        mainPanel.removeAll();
+        mainPanel.repaint();
+        mainPanel.revalidate();
+
+        // add new panel
+        mainPanel.add(activePanel);
+        mainPanel.repaint();
+        mainPanel.revalidate();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,9 +96,16 @@ public class DashboardView extends javax.swing.JFrame {
         authorScrollPane = new javax.swing.JScrollPane();
         authorTable = new dynamic_subjtable.TableCustom();
         newAuthorButton = new View.Button();
-        newAuthorButton1 = new View.Button();
         settingPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        CreateAuthorPanel = new javax.swing.JPanel();
+        fieldName = new textfield.TextField();
+        jLabel4 = new javax.swing.JLabel();
+        fieldAddress = new textfield.TextField();
+        fieldContact = new textfield.TextField();
+        button1 = new View.Button();
+        button2 = new View.Button();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -97,7 +117,6 @@ public class DashboardView extends javax.swing.JFrame {
 
         dashboardButton.setBackground(new java.awt.Color(153, 153, 255));
         dashboardButton.setForeground(new java.awt.Color(0, 0, 0));
-        dashboardButton.setIcon(new javax.swing.ImageIcon("/home/kahfi/Downloads/home.png")); // NOI18N
         dashboardButton.setText("   Home");
         dashboardButton.setSelected(true);
         dashboardButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -113,7 +132,6 @@ public class DashboardView extends javax.swing.JFrame {
         SidePanel.add(dashboardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 155, 160, -1));
 
         jurnalButton.setForeground(new java.awt.Color(0, 0, 0));
-        jurnalButton.setIcon(new javax.swing.ImageIcon("/home/kahfi/Downloads/pen.png")); // NOI18N
         jurnalButton.setText("  Journals");
         jurnalButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -128,7 +146,6 @@ public class DashboardView extends javax.swing.JFrame {
         SidePanel.add(jurnalButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 210, 140, -1));
 
         categoryButton.setForeground(new java.awt.Color(0, 0, 0));
-        categoryButton.setIcon(new javax.swing.ImageIcon("/home/kahfi/Downloads/category.png")); // NOI18N
         categoryButton.setText("  Category");
         categoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -143,7 +160,6 @@ public class DashboardView extends javax.swing.JFrame {
         SidePanel.add(categoryButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 265, 140, -1));
 
         settingButton.setForeground(new java.awt.Color(0, 0, 0));
-        settingButton.setIcon(new javax.swing.ImageIcon("/home/kahfi/Downloads/setting.png")); // NOI18N
         settingButton.setText(" Settings");
         settingButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -158,7 +174,6 @@ public class DashboardView extends javax.swing.JFrame {
         SidePanel.add(settingButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, -1));
 
         authorButton.setForeground(new java.awt.Color(0, 0, 0));
-        authorButton.setIcon(new javax.swing.ImageIcon("/home/kahfi/Downloads/author.png")); // NOI18N
         authorButton.setText("  Authors");
         authorButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -192,7 +207,7 @@ public class DashboardView extends javax.swing.JFrame {
             .addGroup(dashboardPanelLayout.createSequentialGroup()
                 .addGap(0, 291, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(0, 292, Short.MAX_VALUE))
+                .addGap(0, 291, Short.MAX_VALUE))
         );
 
         mainPanel.add(dashboardPanel, "card2");
@@ -266,38 +281,25 @@ public class DashboardView extends javax.swing.JFrame {
             }
         });
 
-        newAuthorButton1.setBackground(new java.awt.Color(153, 153, 255));
-        newAuthorButton1.setText("Refresh");
-        newAuthorButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newAuthorButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout authorPanelLayout = new javax.swing.GroupLayout(authorPanel);
         authorPanel.setLayout(authorPanelLayout);
         authorPanelLayout.setHorizontalGroup(
             authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, authorPanelLayout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(authorPanelLayout.createSequentialGroup()
-                        .addComponent(newAuthorButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(authorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(authorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28))
         );
         authorPanelLayout.setVerticalGroup(
             authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, authorPanelLayout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
-                .addGroup(authorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newAuthorButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(89, Short.MAX_VALUE)
+                .addComponent(newAuthorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(authorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addComponent(authorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
         );
 
         mainPanel.add(authorPanel, "card5");
@@ -327,6 +329,61 @@ public class DashboardView extends javax.swing.JFrame {
 
         mainPanel.add(settingPanel, "card6");
 
+        CreateAuthorPanel.setBackground(new java.awt.Color(255, 255, 255));
+        CreateAuthorPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        CreateAuthorPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        fieldName.setLabelText("Name");
+        fieldName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldNameActionPerformed(evt);
+            }
+        });
+        CreateAuthorPanel.add(fieldName, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 251, -1));
+
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Create Author");
+        CreateAuthorPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, -1, -1));
+
+        fieldAddress.setLabelText("Address");
+        fieldAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldAddressActionPerformed(evt);
+            }
+        });
+        CreateAuthorPanel.add(fieldAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 251, -1));
+
+        fieldContact.setLabelText("Contact");
+        fieldContact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldContactActionPerformed(evt);
+            }
+        });
+        CreateAuthorPanel.add(fieldContact, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 251, -1));
+
+        button1.setBackground(new java.awt.Color(153, 153, 255));
+        button1.setText("Create");
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1ActionPerformed(evt);
+            }
+        });
+        CreateAuthorPanel.add(button1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 113, -1));
+
+        button2.setBackground(new java.awt.Color(204, 204, 204));
+        button2.setText("Cancel");
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button2ActionPerformed(evt);
+            }
+        });
+        CreateAuthorPanel.add(button2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 113, -1));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon("/home/openjournaltheme/Downloads/studying.png")); // NOI18N
+        CreateAuthorPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 40, -1, -1));
+
+        mainPanel.add(CreateAuthorPanel, "card7");
+
         jPanel1.add(mainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 810, 600));
 
         getContentPane().add(jPanel1, "card2");
@@ -336,59 +393,80 @@ public class DashboardView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void dashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardButtonActionPerformed
-       
+        setActiveButton(dashboardButton);
+        setActivePanel(dashboardPanel);
     }//GEN-LAST:event_dashboardButtonActionPerformed
 
     private void jurnalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jurnalButtonActionPerformed
-      
+        setActiveButton(jurnalButton);
+        setActivePanel(jurnalPanel);
     }//GEN-LAST:event_jurnalButtonActionPerformed
 
     private void categoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryButtonActionPerformed
-     
+        setActiveButton(categoryButton);    
+        setActivePanel(categoryPanel);
     }//GEN-LAST:event_categoryButtonActionPerformed
 
     private void settingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingButtonActionPerformed
-     
+        setActiveButton(settingButton);
+        setActivePanel(settingPanel);
 
     }//GEN-LAST:event_settingButtonActionPerformed
 
     private void authorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorButtonActionPerformed
-       
+        setActiveButton(authorButton);
+        setActivePanel(authorPanel);
 
     }//GEN-LAST:event_authorButtonActionPerformed
 
     private void dashboardButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardButtonMouseClicked
 
-        setPanelAndButton(dashboardButton, dashboardPanel);
-       
+
+
     }//GEN-LAST:event_dashboardButtonMouseClicked
 
     private void jurnalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jurnalButtonMouseClicked
 
-       setPanelAndButton(jurnalButton, jurnalPanel);
-    
+
     }//GEN-LAST:event_jurnalButtonMouseClicked
 
     private void categoryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_categoryButtonMouseClicked
-        setPanelAndButton(categoryButton, categoryPanel);
-       
+   
+
     }//GEN-LAST:event_categoryButtonMouseClicked
 
     private void authorButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authorButtonMouseClicked
-        setPanelAndButton(authorButton, authorPanel);
+
     }//GEN-LAST:event_authorButtonMouseClicked
 
     private void settingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingButtonMouseClicked
-        setPanelAndButton(settingButton, settingPanel);
+
     }//GEN-LAST:event_settingButtonMouseClicked
 
     private void newAuthorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAuthorButtonActionPerformed
-       new AuthorView().setVisible(true);
+        setActivePanel(CreateAuthorPanel);
+        authorController.cleanData();
     }//GEN-LAST:event_newAuthorButtonActionPerformed
 
-    private void newAuthorButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAuthorButton1ActionPerformed
- 
-    }//GEN-LAST:event_newAuthorButton1ActionPerformed
+    private void fieldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldNameActionPerformed
+
+    private void fieldAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldAddressActionPerformed
+
+    private void fieldContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldContactActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldContactActionPerformed
+
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        authorController.insertData();
+    }//GEN-LAST:event_button1ActionPerformed
+
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+        setActivePanel(authorPanel);
+    }//GEN-LAST:event_button2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -426,35 +504,35 @@ public class DashboardView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel CreateAuthorPanel;
     private javax.swing.JPanel SidePanel;
     private View.Button authorButton;
-    private javax.swing.JPanel authorPanel;
+    public javax.swing.JPanel authorPanel;
     public static javax.swing.JScrollPane authorScrollPane;
-    public static dynamic_subjtable.TableCustom authorTable;
+    public dynamic_subjtable.TableCustom authorTable;
+    private View.Button button1;
+    private View.Button button2;
     private View.Button categoryButton;
     private javax.swing.JPanel categoryPanel;
     private View.Button dashboardButton;
     private javax.swing.JPanel dashboardPanel;
+    public textfield.TextField fieldAddress;
+    public textfield.TextField fieldContact;
+    public textfield.TextField fieldName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private View.Button jurnalButton;
     private javax.swing.JPanel jurnalPanel;
     private javax.swing.JPanel mainPanel;
     public View.Button newAuthorButton;
-    public View.Button newAuthorButton1;
     private View.Button settingButton;
     private javax.swing.JPanel settingPanel;
     // End of variables declaration//GEN-END:variables
-
-      public void authorData()
-    {
-        
-       new AuthorController(this).loadData(); 
-        
-    }
 
 
 }

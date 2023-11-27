@@ -5,7 +5,6 @@
 package Model;
 import Controller.AuthorController;
 import Controller.koneksi;
-import View.AuthorView;
 import View.DashboardView;
 import java.sql.*; 
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class AuthorModel {
         this.contact = contact;
     }
     
-  public void insertData() {
+ public boolean insertData() {
     this.connection = koneksi.getConnection();
     PreparedStatement statement = null;
 
@@ -62,17 +61,15 @@ public class AuthorModel {
         int rowsAffected = statement.executeUpdate();
 
         if (rowsAffected > 0) {
-           JOptionPane.showMessageDialog(null, "Author successfully inserted!");
-            System.out.println("kode ini dieksekusi");
-         
-
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Failed to insert author.");
+            return true;
         }
+
+        JOptionPane.showMessageDialog(null, "Failed to insert author.");
+        return false; // Explicitly return false if the insertion fails
     } catch (SQLException e) {
         e.printStackTrace(); // Ini akan mencetak informasi kesalahan ke konsol
         JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        return false; // Return false in case of SQLException
     } finally {
         // Pastikan untuk menutup statement setelah digunakan
         if (statement != null) {
@@ -84,14 +81,15 @@ public class AuthorModel {
         }
     }
 }
+
   
   public List<AuthorModel> getAuthor()
   {
-      List<AuthorModel> authors = null; 
+      List<AuthorModel> authors = new ArrayList<>(); 
       
       try {
-          connection = koneksi.getConnection(); 
-          PreparedStatement statement = connection.prepareStatement("select * from author");
+          this.connection = koneksi.getConnection(); 
+          PreparedStatement statement = connection.prepareStatement("select * from author order by name asc");
           ResultSet resultSet = statement.executeQuery(); 
           
           while(resultSet.next()){

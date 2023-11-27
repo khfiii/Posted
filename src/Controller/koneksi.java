@@ -39,5 +39,8 @@ public class koneksi {
             e.printStackTrace();
         }
     }
+      
+      public static void main(String[] args) {
+    }
     
 }
