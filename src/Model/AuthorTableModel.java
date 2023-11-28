@@ -9,7 +9,7 @@ public class AuthorTableModel extends AbstractTableModel {
 
     private List<AuthorModel> authors = new ArrayList<>();
 
-    private String[] columnNames = {"No", "Name", "Address", "Contact"};
+    private String[] columnNames = {"ID Author", "Name", "Address", "Contact"};
 
     public AuthorTableModel(List<AuthorModel> authors) {
         this.authors = authors;
@@ -56,7 +56,7 @@ public class AuthorTableModel extends AbstractTableModel {
         AuthorModel author = authors.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return rowIndex + 1;
+                return author.getIdAuthor(); 
             case 1:
                 return author.getName();
             case 2:
@@ -77,10 +77,12 @@ public class AuthorTableModel extends AbstractTableModel {
         AuthorModel author = authors.get(rowIndex);
 
         switch (colIndex) {
+            case 0:
+                author.setIdAuthor((String) value);
+                break;
             case 1:
                 author.setName((String) value);
                 break;
-
             case 2:
                 author.setAddress((String) value);
                 break;
