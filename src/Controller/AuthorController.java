@@ -18,8 +18,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-import raven.alerts.MessageAlerts;
-import raven.popup.GlassPanePopup;
 
 public class AuthorController {
 
@@ -39,7 +37,7 @@ public class AuthorController {
     public void loadData() {
         try {
             
-            String getSearch = dashboardView.fieldSeachAuthor.getText(); 
+            String getSearch = dashboardView.fieldSearchAuthor.getText(); 
             authorModel.setSearch(getSearch);
             
             
@@ -88,7 +86,7 @@ public class AuthorController {
 
         authorModel.setName(nama);
         authorModel.setAddress(address);
-        authorModel.setContact(contact);
+        authorModel.setEmail(contact);
 
         if (authorModel.insertData()) {
             JOptionPane.showMessageDialog(null, "Succesfully");
@@ -106,7 +104,7 @@ public class AuthorController {
 
         authorModel.setName(nama);
         authorModel.setAddress(address);
-        authorModel.setContact(contact);
+        authorModel.setEmail(contact);
         authorModel.setIdAuthor(IDAuthor);
 
         if (authorModel.updateData()) {

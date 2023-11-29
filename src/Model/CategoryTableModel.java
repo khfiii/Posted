@@ -1,17 +1,24 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Model;
-
-import javax.swing.table.AbstractTableModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.AbstractTableModel;
 
-public class AuthorTableModel extends AbstractTableModel {
+/**
+ *
+ * @author openjournaltheme
+ */
+public class CategoryTableModel extends AbstractTableModel {
+    
+        private List<AuthorModel> category = new ArrayList<>();
 
-    private List<AuthorModel> authors = new ArrayList<>();
+    private String[] columnNames = {"ID Category", "Name", "Address", "};
 
-    private String[] columnNames = {"ID Author", "Name", "Address", "Email"};
-
-    public AuthorTableModel(List<AuthorModel> authors) {
+    public CategoryTableModel(List<CategoryModel> category) {
         this.authors = authors;
         fireTableDataChanged();
 
@@ -93,5 +100,5 @@ public class AuthorTableModel extends AbstractTableModel {
                 throw new AssertionError();
         }
     }
-
+    
 }

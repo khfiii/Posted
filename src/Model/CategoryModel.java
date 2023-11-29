@@ -4,26 +4,23 @@
  */
 package Model;
 
-import Controller.AuthorController;
 import Controller.koneksi;
-import View.DashboardView;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author kahfi
+ * @author openjournaltheme
  */
-public class AuthorModel {
+public class CategoryModel {
 
     private String name;
-    private String address;
-    private String email;
-    private String idAuthor;
-
-    private String search;
+    private String IDCategory;
 
     public String getSearch() {
         return search;
@@ -32,13 +29,14 @@ public class AuthorModel {
     public void setSearch(String search) {
         this.search = search;
     }
+    private String search;
 
-    public String getIdAuthor() {
-        return idAuthor;
+    public String getIDCategory() {
+        return IDCategory;
     }
 
-    public void setIdAuthor(String idAuthor) {
-        this.idAuthor = idAuthor;
+    public void setIDCategory(String IDCategory) {
+        this.IDCategory = IDCategory;
     }
 
     Connection connection;
@@ -51,31 +49,13 @@ public class AuthorModel {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public boolean insertData() {
         this.connection = koneksi.getConnection();
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO author (name, address, email) VALUES (?, ?, ?)");
+            statement = connection.prepareStatement("INSERT INTO category (name) VALUES (?)");
             statement.setString(1, getName());
-            statement.setString(2, getAddress());
-            statement.setString(3, getEmail());
 
             // Menggunakan executeUpdate karena ini adalah operasi INSERT
             int rowsAffected = statement.executeUpdate();
@@ -107,11 +87,9 @@ public class AuthorModel {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("update author set name=?, address=?, email=? where id=?");
+            statement = connection.prepareStatement("update category set name=? where id=?");
             statement.setString(1, getName());
-            statement.setString(2, getAddress());
-            statement.setString(3, getEmail());
-            statement.setString(4, getIdAuthor());
+            statement.setString(2, getIDCategory());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -119,7 +97,7 @@ public class AuthorModel {
                 return true;
             }
 
-            JOptionPane.showMessageDialog(null, "Failed to insert author.");
+            JOptionPane.showMessageDialog(null, "Failed to update category");
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,8 +113,8 @@ public class AuthorModel {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("delete from author where id=?");
-            statement.setString(1, getIdAuthor());
+            statement = connection.prepareStatement("delete from category where id=?");
+            statement.setString(1, getIDCategory());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -144,7 +122,7 @@ public class AuthorModel {
                 return true;
             }
 
-            JOptionPane.showMessageDialog(null, "Failed to delete author.");
+            JOptionPane.showMessageDialog(null, "Failed to delete category");
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,19 +132,19 @@ public class AuthorModel {
         }
 
     }
-
-    public List<AuthorModel> getAuthor() {
-        List<AuthorModel> authors = new ArrayList<>();
+    
+     public List<CategoryModel> getCategory() {
+        List<CategoryModel> category = new ArrayList<>();
 
         try {
             this.connection = koneksi.getConnection();
 
             // Tentukan query dasar tanpa kondisi pencarian
-            String query = "SELECT * FROM author";
+            String query = "SELECT * FROM category";
 
             // Jika getSearch() tidak kosong, tambahkan kondisi pencarian
             if (getSearch() != null && !getSearch().isEmpty()) {
-                query += " WHERE name LIKE ? or address like? or email like?";
+                query += " WHERE name LIKE ?";
             }
 
             PreparedStatement statement = connection.prepareStatement(query);
@@ -174,25 +152,24 @@ public class AuthorModel {
             // Jika getSearch() tidak kosong, set nilai parameter pencarian
             if (getSearch() != null && !getSearch().isEmpty()) {
                 statement.setString(1, "%" + getSearch() + "%");
-                statement.setString(2, "%" + getSearch() + "%");
-                statement.setString(3, "%" + getSearch() + "%");
             }
 
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                AuthorModel author = new AuthorModel();
-                author.setName(resultSet.getString("name"));
-                author.setAddress(resultSet.getString("address"));
-                author.setEmail(resultSet.getString("email"));
-                author.setIdAuthor(resultSet.getString("id"));
-                authors.add(author);
+                CategoryModel categories = new CategoryModel(); 
+                categories.setName(resultSet.getString("name"));
+                category.add(categories); 
+//                
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return authors;
+        return category;
     }
+    
+  
+
 
 }
