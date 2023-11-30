@@ -5,6 +5,7 @@
 package View;
 
 import Controller.AuthorController;
+import Controller.CategoryController;
 import Controller.koneksi;
 import Model.AuthorTableModel;
 import java.sql.*;
@@ -29,11 +30,14 @@ import javax.swing.table.DefaultTableModel;
 public class DashboardView extends javax.swing.JFrame {
     
     AuthorController authorController; 
+    CategoryController categoryController; 
 
     public DashboardView() {
         initComponents();
         this.authorController = new AuthorController(this); 
+        this.categoryController = new CategoryController(this);
         loadAuthorData();
+        loadCategoryData();
       
   
 
@@ -46,6 +50,11 @@ public class DashboardView extends javax.swing.JFrame {
     public void loadAuthorData()
     {
         authorController.loadData();
+    }
+    
+    public void loadCategoryData()
+    {
+        categoryController.loadData();
     }
 
     private void setActiveButton(View.Button activeButton) {
@@ -91,7 +100,7 @@ public class DashboardView extends javax.swing.JFrame {
         jurnalPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         categoryPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        categoryScrollPanel = new javax.swing.JScrollPane();
         categoryTable = new dynamic_subjtable.TableCustom();
         authorPanel = new javax.swing.JPanel();
         authorScrollPane = new javax.swing.JScrollPane();
@@ -250,7 +259,7 @@ public class DashboardView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(categoryTable);
+        categoryScrollPanel.setViewportView(categoryTable);
 
         javax.swing.GroupLayout categoryPanelLayout = new javax.swing.GroupLayout(categoryPanel);
         categoryPanel.setLayout(categoryPanelLayout);
@@ -258,14 +267,14 @@ public class DashboardView extends javax.swing.JFrame {
             categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, categoryPanelLayout.createSequentialGroup()
                 .addContainerGap(90, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(categoryScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
         categoryPanelLayout.setVerticalGroup(
             categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, categoryPanelLayout.createSequentialGroup()
                 .addContainerGap(112, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(categoryScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
         );
 
@@ -361,8 +370,6 @@ public class DashboardView extends javax.swing.JFrame {
         panelRound1.setRoundBottomRight(10);
         panelRound1.setRoundTopLeft(10);
         panelRound1.setRoundTopRight(10);
-
-        jLabel7.setIcon(new javax.swing.ImageIcon("/home/openjournaltheme/Downloads/studying.png")); // NOI18N
 
         fieldName.setLabelText("Name");
         fieldName.addActionListener(new java.awt.event.ActionListener() {
@@ -603,7 +610,8 @@ public class DashboardView extends javax.swing.JFrame {
     public dynamic_subjtable.TableCustom authorTable;
     private View.Button categoryButton;
     private javax.swing.JPanel categoryPanel;
-    private dynamic_subjtable.TableCustom categoryTable;
+    public javax.swing.JScrollPane categoryScrollPanel;
+    public dynamic_subjtable.TableCustom categoryTable;
     private View.Button dashboardButton;
     private javax.swing.JPanel dashboardPanel;
     public textfield.TextField fieldAddress;
@@ -616,7 +624,6 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private View.Button jurnalButton;
     private javax.swing.JPanel jurnalPanel;
     private javax.swing.JPanel mainPanel;

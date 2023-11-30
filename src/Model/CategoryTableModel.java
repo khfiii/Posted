@@ -14,43 +14,43 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CategoryTableModel extends AbstractTableModel {
     
-        private List<AuthorModel> category = new ArrayList<>();
+    private List<CategoryModel> categories = new ArrayList<>();
 
-    private String[] columnNames = {"ID Category", "Name", "Address", "};
+    private String[] columnNames = {"ID Category", "Name"};
 
-    public CategoryTableModel(List<CategoryModel> category) {
-        this.authors = authors;
+    public CategoryTableModel(List<CategoryModel> Categories) {
+        this.categories = Categories;
         fireTableDataChanged();
 
     }
 
-    public void refresh(List<AuthorModel> updatedAuthors) {
-        this.authors = updatedAuthors;
+    public void refresh(List<CategoryModel> categories) {
+        this.categories = categories;
         fireTableDataChanged();
     }
 
-    public void insert(AuthorModel author) {
-        authors.add(author);
+    public void insert(CategoryModel category) {
+        categories.add(category);
         fireTableDataChanged();
     }
 
-    public void update(int row, AuthorModel author) {
-        authors.add(author);
+    public void update(int row, CategoryModel category) {
+        categories.add(category);
         fireTableDataChanged();
     }
 
     public void delete(int row) {
-        authors.remove(row);
+        categories.remove(row);
         fireTableDataChanged();
     }
 
-    public AuthorModel get(int row) {
-        return authors.get(row);
+    public CategoryModel get(int row) {
+        return categories.get(row);
     }
 
     @Override
     public int getRowCount() {
-        return authors.size();
+        return categories.size();
     }
 
     @Override
@@ -60,17 +60,12 @@ public class CategoryTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        AuthorModel author = authors.get(rowIndex);
+        CategoryModel category = categories.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return author.getIdAuthor(); 
+                return category.getIDCategory(); 
             case 1:
-                return author.getName();
-            case 2:
-                return author.getAddress();
-            case 3:
-                return author.getEmail();
-
+                return category.getName();
             default:
                 return null;
         }
@@ -81,20 +76,14 @@ public class CategoryTableModel extends AbstractTableModel {
     }
 
     public void setValueAt(Object value, int rowIndex, int colIndex) {
-        AuthorModel author = authors.get(rowIndex);
+        CategoryModel category = categories.get(rowIndex);
 
         switch (colIndex) {
             case 0:
-                author.setIdAuthor((String) value);
+                category.setIDCategory((String) value);
                 break;
             case 1:
-                author.setName((String) value);
-                break;
-            case 2:
-                author.setAddress((String) value);
-                break;
-            case 3:
-                author.setEmail((String) value);
+                category.setName((String) value);
                 break;
             default:
                 throw new AssertionError();

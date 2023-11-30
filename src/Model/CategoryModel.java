@@ -159,6 +159,7 @@ public class CategoryModel {
             while (resultSet.next()) {
                 CategoryModel categories = new CategoryModel(); 
                 categories.setName(resultSet.getString("name"));
+                categories.setIDCategory(resultSet.getString("id"));
                 category.add(categories); 
 //                
             }

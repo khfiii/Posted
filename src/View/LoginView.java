@@ -137,6 +137,11 @@ public class LoginView extends javax.swing.JFrame {
         comboBoxRole.setAlignmentX(0.0F);
         comboBoxRole.setAlignmentY(0.0F);
         comboBoxRole.setLabeText("");
+        comboBoxRole.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboBoxRoleMouseClicked(evt);
+            }
+        });
 
         jLabel7.setIcon(new javax.swing.ImageIcon("/home/kahfi/Downloads/management (1).png")); // NOI18N
 
@@ -225,6 +230,10 @@ public class LoginView extends javax.swing.JFrame {
     private void fieldPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldPasswordFocusLost
         setDefaultTextIfEmpty(fieldPassword, "Password");
     }//GEN-LAST:event_fieldPasswordFocusLost
+
+    private void comboBoxRoleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboBoxRoleMouseClicked
+      String roles =  comboBoxRole.getSelectedItem().toString(); 
+    }//GEN-LAST:event_comboBoxRoleMouseClicked
 
     /**
      * @param args the command line arguments
