@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class koneksi {
       private static final String URL = "jdbc:mysql://localhost:3306/absensi";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "coklatmanis";
+    private static final String PASSWORD = "";
     private static Connection connection;
     
        public static Connection getConnection() {

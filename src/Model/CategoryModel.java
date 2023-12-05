@@ -21,6 +21,15 @@ public class CategoryModel {
 
     private String name;
     private String IDCategory;
+    private String description; 
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getSearch() {
         return search;
@@ -54,8 +63,9 @@ public class CategoryModel {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO category (name) VALUES (?)");
+            statement = connection.prepareStatement("INSERT INTO category (name, description) VALUES (?, ?)");
             statement.setString(1, getName());
+            statement.setString(2, getDescription());
 
             // Menggunakan executeUpdate karena ini adalah operasi INSERT
             int rowsAffected = statement.executeUpdate();
@@ -64,7 +74,7 @@ public class CategoryModel {
                 return true;
             }
 
-            JOptionPane.showMessageDialog(null, "Failed to insert author.");
+            JOptionPane.showMessageDialog(null, "Failed to insert category.");
             return false; // Explicitly return false if the insertion fails
         } catch (SQLException e) {
             e.printStackTrace(); // Ini akan mencetak informasi kesalahan ke konsol
@@ -87,9 +97,10 @@ public class CategoryModel {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("update category set name=? where id=?");
+            statement = connection.prepareStatement("update category set name=?, description=? where id=?");
             statement.setString(1, getName());
-            statement.setString(2, getIDCategory());
+            statement.setString(2, getDescription());
+            statement.setString(3, getIDCategory());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -159,6 +170,7 @@ public class CategoryModel {
             while (resultSet.next()) {
                 CategoryModel categories = new CategoryModel(); 
                 categories.setName(resultSet.getString("name"));
+                categories.setDescription(resultSet.getString("description"));
                 categories.setIDCategory(resultSet.getString("id"));
                 category.add(categories); 
 //                

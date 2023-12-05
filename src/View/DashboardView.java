@@ -6,6 +6,7 @@ package View;
 
 import Controller.AuthorController;
 import Controller.CategoryController;
+import Controller.JournalController;
 import Controller.koneksi;
 import Model.AuthorTableModel;
 import java.sql.*;
@@ -22,39 +23,42 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
-
 /**
  *
  * @author kahfi
  */
 public class DashboardView extends javax.swing.JFrame {
-    
-    AuthorController authorController; 
-    CategoryController categoryController; 
+
+    AuthorController authorController;
+    CategoryController categoryController;
+    JournalController journalController;
 
     public DashboardView() {
         initComponents();
-        this.authorController = new AuthorController(this); 
+        this.authorController = new AuthorController(this);
         this.categoryController = new CategoryController(this);
+        this.journalController = new JournalController(this);
+        
         loadAuthorData();
         loadCategoryData();
-      
-  
+        loadJournalData();
 
     }
 
     public TableCustom getAuthorTable() {
         return authorTable;
     }
-    
-    public void loadAuthorData()
-    {
+
+    public void loadAuthorData() {
         authorController.loadData();
     }
-    
-    public void loadCategoryData()
-    {
+
+    public void loadCategoryData() {
         categoryController.loadData();
+    }
+
+    public void loadJournalData() {
+        journalController.loadData();
     }
 
     private void setActiveButton(View.Button activeButton) {
@@ -66,8 +70,8 @@ public class DashboardView extends javax.swing.JFrame {
         authorButton.setBackground(activeButton == authorButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
         settingButton.setBackground(activeButton == settingButton ? new Color(153, 153, 255) : new Color(255, 255, 255));
     }
-    
-     public void setActivePanel(JPanel activePanel) {
+
+    public void setActivePanel(JPanel activePanel) {
         mainPanel.removeAll();
         mainPanel.repaint();
         mainPanel.revalidate();
@@ -98,8 +102,10 @@ public class DashboardView extends javax.swing.JFrame {
         dashboardPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jurnalPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        journalScrollPanel = new javax.swing.JScrollPane();
+        journalTable = new dynamic_subjtable.TableCustom();
         categoryPanel = new javax.swing.JPanel();
+        createNewCategoryButton = new View.Button();
         categoryScrollPanel = new javax.swing.JScrollPane();
         categoryTable = new dynamic_subjtable.TableCustom();
         authorPanel = new javax.swing.JPanel();
@@ -113,12 +119,19 @@ public class DashboardView extends javax.swing.JFrame {
         CreateAuthorPanel = new javax.swing.JPanel();
         panelRound1 = new View.PanelRound();
         jLabel7 = new javax.swing.JLabel();
-        fieldName = new textfield.TextField();
-        fieldAddress = new textfield.TextField();
-        fieldContact = new textfield.TextField();
+        fieldAuthorName = new textfield.TextField();
+        fieldAuthorAddress = new textfield.TextField();
+        fieldAuthorContact = new textfield.TextField();
         authorOperationButton = new View.Button();
         authorOperationCancel = new View.Button();
         authorLabel = new javax.swing.JLabel();
+        CreateCategoryPanel = new javax.swing.JPanel();
+        panelRound2 = new View.PanelRound();
+        fieldCategoryName = new textfield.TextField();
+        fieldCategoryDesciption = new textfield.TextField();
+        categoryOperationButton = new View.Button();
+        categoryOperationCancel = new View.Button();
+        categoryLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -225,28 +238,65 @@ public class DashboardView extends javax.swing.JFrame {
 
         mainPanel.add(dashboardPanel, "card2");
 
-        jLabel2.setText("Journal");
+        jurnalPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        journalTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        journalTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                journalTableMouseClicked(evt);
+            }
+        });
+        journalScrollPanel.setViewportView(journalTable);
 
         javax.swing.GroupLayout jurnalPanelLayout = new javax.swing.GroupLayout(jurnalPanel);
         jurnalPanel.setLayout(jurnalPanelLayout);
         jurnalPanelLayout.setHorizontalGroup(
             jurnalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jurnalPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGap(0, 810, Short.MAX_VALUE)
+            .addGroup(jurnalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jurnalPanelLayout.createSequentialGroup()
+                    .addGap(50, 50, 50)
+                    .addComponent(journalScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(51, Short.MAX_VALUE)))
         );
         jurnalPanelLayout.setVerticalGroup(
             jurnalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jurnalPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(jurnalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jurnalPanelLayout.createSequentialGroup()
+                    .addGap(99, 99, 99)
+                    .addComponent(journalScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(100, Short.MAX_VALUE)))
         );
 
         mainPanel.add(jurnalPanel, "card3");
 
         categoryPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        createNewCategoryButton.setBackground(new java.awt.Color(153, 153, 255));
+        createNewCategoryButton.setForeground(new java.awt.Color(102, 102, 102));
+        createNewCategoryButton.setText("New Category");
+        createNewCategoryButton.setSelected(true);
+        createNewCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createNewCategoryButtonMouseClicked(evt);
+            }
+        });
+        createNewCategoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createNewCategoryButtonActionPerformed(evt);
+            }
+        });
 
         categoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -259,6 +309,11 @@ public class DashboardView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        categoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                categoryTableMouseClicked(evt);
+            }
+        });
         categoryScrollPanel.setViewportView(categoryTable);
 
         javax.swing.GroupLayout categoryPanelLayout = new javax.swing.GroupLayout(categoryPanel);
@@ -266,16 +321,20 @@ public class DashboardView extends javax.swing.JFrame {
         categoryPanelLayout.setHorizontalGroup(
             categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, categoryPanelLayout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
-                .addComponent(categoryScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addContainerGap(55, Short.MAX_VALUE)
+                .addGroup(categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(createNewCategoryButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(categoryScrollPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46))
         );
         categoryPanelLayout.setVerticalGroup(
             categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, categoryPanelLayout.createSequentialGroup()
-                .addContainerGap(112, Short.MAX_VALUE)
-                .addComponent(categoryScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61))
+            .addGroup(categoryPanelLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(createNewCategoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(categoryScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         mainPanel.add(categoryPanel, "card4");
@@ -371,24 +430,24 @@ public class DashboardView extends javax.swing.JFrame {
         panelRound1.setRoundTopLeft(10);
         panelRound1.setRoundTopRight(10);
 
-        fieldName.setLabelText("Name");
-        fieldName.addActionListener(new java.awt.event.ActionListener() {
+        fieldAuthorName.setLabelText("Name");
+        fieldAuthorName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldNameActionPerformed(evt);
+                fieldAuthorNameActionPerformed(evt);
             }
         });
 
-        fieldAddress.setLabelText("Address");
-        fieldAddress.addActionListener(new java.awt.event.ActionListener() {
+        fieldAuthorAddress.setLabelText("Address");
+        fieldAuthorAddress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldAddressActionPerformed(evt);
+                fieldAuthorAddressActionPerformed(evt);
             }
         });
 
-        fieldContact.setLabelText("Contact");
-        fieldContact.addActionListener(new java.awt.event.ActionListener() {
+        fieldAuthorContact.setLabelText("Contact");
+        fieldAuthorContact.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldContactActionPerformed(evt);
+                fieldAuthorContactActionPerformed(evt);
             }
         });
 
@@ -434,9 +493,9 @@ public class DashboardView extends javax.swing.JFrame {
                         .addGap(91, 91, 91))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
                         .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldContact, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(fieldAuthorAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldAuthorName, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldAuthorContact, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(65, 65, 65))))
         );
         panelRound1Layout.setVerticalGroup(
@@ -447,11 +506,11 @@ public class DashboardView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(authorLabel)
                 .addGap(18, 18, 18)
-                .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldAuthorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(fieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldAuthorAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(fieldContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldAuthorContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(authorOperationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -462,6 +521,88 @@ public class DashboardView extends javax.swing.JFrame {
         CreateAuthorPanel.add(panelRound1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 400, 460));
 
         mainPanel.add(CreateAuthorPanel, "card7");
+
+        CreateCategoryPanel.setBackground(new java.awt.Color(255, 255, 255));
+        CreateCategoryPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelRound2.setBackground(new java.awt.Color(255, 255, 255));
+        panelRound2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelRound2.setRoundBottomLeft(10);
+        panelRound2.setRoundBottomRight(10);
+        panelRound2.setRoundTopLeft(10);
+        panelRound2.setRoundTopRight(10);
+
+        fieldCategoryName.setLabelText("Name");
+        fieldCategoryName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldCategoryNameActionPerformed(evt);
+            }
+        });
+
+        fieldCategoryDesciption.setLabelText("Description");
+        fieldCategoryDesciption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldCategoryDesciptionActionPerformed(evt);
+            }
+        });
+
+        categoryOperationButton.setBackground(new java.awt.Color(153, 153, 255));
+        categoryOperationButton.setText("Create");
+        categoryOperationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryOperationButtonActionPerformed(evt);
+            }
+        });
+
+        categoryOperationCancel.setBackground(new java.awt.Color(204, 204, 204));
+        categoryOperationCancel.setText("Cancel");
+        categoryOperationCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryOperationCancelActionPerformed(evt);
+            }
+        });
+
+        categoryLabel.setForeground(new java.awt.Color(102, 102, 102));
+        categoryLabel.setText("Create Category");
+
+        javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);
+        panelRound2.setLayout(panelRound2Layout);
+        panelRound2Layout.setHorizontalGroup(
+            panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound2Layout.createSequentialGroup()
+                .addGap(153, 153, 153)
+                .addComponent(categoryLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
+                .addContainerGap(80, Short.MAX_VALUE)
+                .addGroup(panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fieldCategoryDesciption, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldCategoryName, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelRound2Layout.createSequentialGroup()
+                        .addComponent(categoryOperationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(categoryOperationCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(65, 65, 65))
+        );
+        panelRound2Layout.setVerticalGroup(
+            panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound2Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(categoryLabel)
+                .addGap(18, 18, 18)
+                .addComponent(fieldCategoryName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(fieldCategoryDesciption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(categoryOperationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(categoryOperationCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(213, Short.MAX_VALUE))
+        );
+
+        CreateCategoryPanel.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 50, 400, 460));
+
+        mainPanel.add(CreateCategoryPanel, "card7");
 
         jPanel1.add(mainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 810, 600));
 
@@ -482,7 +623,7 @@ public class DashboardView extends javax.swing.JFrame {
     }//GEN-LAST:event_jurnalButtonActionPerformed
 
     private void categoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryButtonActionPerformed
-        setActiveButton(categoryButton);    
+        setActiveButton(categoryButton);
         setActivePanel(categoryPanel);
     }//GEN-LAST:event_categoryButtonActionPerformed
 
@@ -501,7 +642,6 @@ public class DashboardView extends javax.swing.JFrame {
     private void dashboardButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardButtonMouseClicked
 
 
-
     }//GEN-LAST:event_dashboardButtonMouseClicked
 
     private void jurnalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jurnalButtonMouseClicked
@@ -510,7 +650,7 @@ public class DashboardView extends javax.swing.JFrame {
     }//GEN-LAST:event_jurnalButtonMouseClicked
 
     private void categoryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_categoryButtonMouseClicked
-   
+
 
     }//GEN-LAST:event_categoryButtonMouseClicked
 
@@ -527,17 +667,17 @@ public class DashboardView extends javax.swing.JFrame {
         authorController.insertOperation();
     }//GEN-LAST:event_newAuthorButtonActionPerformed
 
-    private void fieldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNameActionPerformed
+    private void fieldAuthorNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAuthorNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldNameActionPerformed
+    }//GEN-LAST:event_fieldAuthorNameActionPerformed
 
-    private void fieldAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAddressActionPerformed
+    private void fieldAuthorAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAuthorAddressActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldAddressActionPerformed
+    }//GEN-LAST:event_fieldAuthorAddressActionPerformed
 
-    private void fieldContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldContactActionPerformed
+    private void fieldAuthorContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAuthorContactActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldContactActionPerformed
+    }//GEN-LAST:event_fieldAuthorContactActionPerformed
 
     private void authorOperationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorOperationButtonActionPerformed
         authorController.doOperation();
@@ -548,11 +688,11 @@ public class DashboardView extends javax.swing.JFrame {
     }//GEN-LAST:event_authorOperationCancelActionPerformed
 
     private void authorTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authorTableMouseClicked
-         authorController.fillData();
+        authorController.fillData();
     }//GEN-LAST:event_authorTableMouseClicked
 
     private void authorTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_authorTableKeyReleased
-       
+
     }//GEN-LAST:event_authorTableKeyReleased
 
     private void fieldSearchAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSearchAuthorActionPerformed
@@ -560,8 +700,40 @@ public class DashboardView extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldSearchAuthorActionPerformed
 
     private void fieldSearchAuthorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldSearchAuthorKeyReleased
-       authorController.loadData();
+        authorController.loadData();
     }//GEN-LAST:event_fieldSearchAuthorKeyReleased
+
+    private void fieldCategoryNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCategoryNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldCategoryNameActionPerformed
+
+    private void fieldCategoryDesciptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldCategoryDesciptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldCategoryDesciptionActionPerformed
+
+    private void categoryOperationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryOperationButtonActionPerformed
+        categoryController.doOperation();
+    }//GEN-LAST:event_categoryOperationButtonActionPerformed
+
+    private void categoryOperationCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryOperationCancelActionPerformed
+        categoryController.doOperationCancel();
+    }//GEN-LAST:event_categoryOperationCancelActionPerformed
+
+    private void createNewCategoryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createNewCategoryButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_createNewCategoryButtonMouseClicked
+
+    private void createNewCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewCategoryButtonActionPerformed
+        categoryController.insertOperation();
+    }//GEN-LAST:event_createNewCategoryButtonActionPerformed
+
+    private void categoryTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_categoryTableMouseClicked
+        categoryController.fillData();
+    }//GEN-LAST:event_categoryTableMouseClicked
+
+    private void journalTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_journalTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_journalTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -600,6 +772,7 @@ public class DashboardView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel CreateAuthorPanel;
+    public javax.swing.JPanel CreateCategoryPanel;
     private javax.swing.JPanel SidePanel;
     private View.Button authorButton;
     public javax.swing.JLabel authorLabel;
@@ -609,29 +782,36 @@ public class DashboardView extends javax.swing.JFrame {
     public static javax.swing.JScrollPane authorScrollPane;
     public dynamic_subjtable.TableCustom authorTable;
     private View.Button categoryButton;
-    private javax.swing.JPanel categoryPanel;
+    public javax.swing.JLabel categoryLabel;
+    public View.Button categoryOperationButton;
+    public View.Button categoryOperationCancel;
+    public javax.swing.JPanel categoryPanel;
     public javax.swing.JScrollPane categoryScrollPanel;
     public dynamic_subjtable.TableCustom categoryTable;
+    private View.Button createNewCategoryButton;
     private View.Button dashboardButton;
     private javax.swing.JPanel dashboardPanel;
-    public textfield.TextField fieldAddress;
-    public textfield.TextField fieldContact;
-    public textfield.TextField fieldName;
+    public textfield.TextField fieldAuthorAddress;
+    public textfield.TextField fieldAuthorContact;
+    public textfield.TextField fieldAuthorName;
+    public textfield.TextField fieldCategoryDesciption;
+    public textfield.TextField fieldCategoryName;
     public javax.swing.JTextField fieldSearchAuthor;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    public javax.swing.JScrollPane journalScrollPanel;
+    public dynamic_subjtable.TableCustom journalTable;
     private View.Button jurnalButton;
-    private javax.swing.JPanel jurnalPanel;
+    public javax.swing.JPanel jurnalPanel;
     private javax.swing.JPanel mainPanel;
     public View.Button newAuthorButton;
     private View.PanelRound panelRound1;
+    private View.PanelRound panelRound2;
     private View.Button settingButton;
     private javax.swing.JPanel settingPanel;
     // End of variables declaration//GEN-END:variables
-
 
 }

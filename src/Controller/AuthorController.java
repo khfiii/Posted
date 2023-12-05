@@ -48,9 +48,9 @@ public class AuthorController {
     }
 
     public void insertOperation() {
-        dashboardView.fieldName.setText("");
-        dashboardView.fieldAddress.setText("");
-        dashboardView.fieldContact.setText("");
+        dashboardView.fieldAuthorName.setText("");
+        dashboardView.fieldAuthorAddress.setText("");
+        dashboardView.fieldAuthorContact.setText("");
 
         dashboardView.authorLabel.setText("Create Author");
         dashboardView.authorOperationButton.setText("Create");
@@ -65,9 +65,9 @@ public class AuthorController {
 
     public void insertData() {
 
-        String nama = dashboardView.fieldName.getText();
-        String contact = dashboardView.fieldContact.getText();
-        String address = dashboardView.fieldAddress.getText();
+        String nama = dashboardView.fieldAuthorName.getText();
+        String contact = dashboardView.fieldAuthorContact.getText();
+        String address = dashboardView.fieldAuthorAddress.getText();
 
         if (nama.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Field name is required");
@@ -98,9 +98,9 @@ public class AuthorController {
 
     public void editData() {
 
-        String nama = dashboardView.fieldName.getText();
-        String contact = dashboardView.fieldContact.getText();
-        String address = dashboardView.fieldAddress.getText();
+        String nama = dashboardView.fieldAuthorName.getText();
+        String contact = dashboardView.fieldAuthorContact.getText();
+        String address = dashboardView.fieldAuthorAddress.getText();
 
         authorModel.setName(nama);
         authorModel.setAddress(address);
@@ -149,6 +149,7 @@ public class AuthorController {
     }
 
     public void fillData() {
+    
         int row = dashboardView.authorTable.getSelectedRow();
         this.IDAuthor = dashboardView.authorTable.getModel().getValueAt(row, 0).toString();
         String name = dashboardView.authorTable.getModel().getValueAt(row, 1).toString();
@@ -158,9 +159,9 @@ public class AuthorController {
         dashboardView.setActivePanel(dashboardView.CreateAuthorPanel);
         dashboardView.authorLabel.setText("Edit Author");
 
-        dashboardView.fieldName.setText(name);
-        dashboardView.fieldAddress.setText(address);
-        dashboardView.fieldContact.setText(contact);
+        dashboardView.fieldAuthorName.setText(name);
+        dashboardView.fieldAuthorAddress.setText(address);
+        dashboardView.fieldAuthorContact.setText(contact);
 
         dashboardView.authorOperationButton.setText("Edit");
 

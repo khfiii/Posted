@@ -16,7 +16,7 @@ public class CategoryTableModel extends AbstractTableModel {
     
     private List<CategoryModel> categories = new ArrayList<>();
 
-    private String[] columnNames = {"ID Category", "Name"};
+    private String[] columnNames = {"ID Category", "Name", "Description"};
 
     public CategoryTableModel(List<CategoryModel> Categories) {
         this.categories = Categories;
@@ -66,6 +66,8 @@ public class CategoryTableModel extends AbstractTableModel {
                 return category.getIDCategory(); 
             case 1:
                 return category.getName();
+            case 2:
+                return category.getDescription();
             default:
                 return null;
         }
@@ -75,19 +77,6 @@ public class CategoryTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
-    public void setValueAt(Object value, int rowIndex, int colIndex) {
-        CategoryModel category = categories.get(rowIndex);
 
-        switch (colIndex) {
-            case 0:
-                category.setIDCategory((String) value);
-                break;
-            case 1:
-                category.setName((String) value);
-                break;
-            default:
-                throw new AssertionError();
-        }
-    }
     
 }
